@@ -72,6 +72,8 @@ class Main
 
     private function getDocs()
     {
+        // TODO: Move this to a new function for file based docs
+        // TODO: Add config check for doc type "file vs DB"
         $docFiles = scandir(self::DOC_PATH );
         unset($docFiles[0]);
         unset($docFiles[1]);
