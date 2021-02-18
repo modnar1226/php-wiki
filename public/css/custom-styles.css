@@ -1,0 +1,89 @@
+#nav {
+    padding: 1rem;
+    height: 100vh;
+}
+
+#content {
+    padding: 1rem;
+}
+
+.doc-sidebar {
+    padding: 30px;
+    border-right: 1px solid #e5e5e5; 
+}
+
+article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
+    display: block; 
+}
+
+.nav-vertical-2 {
+  width: 100%; }
+  .nav-vertical-2 .nav-item {
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    transition-delay: 0s; }
+    .nav-vertical-2 .nav-item.active {
+      padding-bottom: 15px; }
+  .nav-vertical-2 .nav-link {
+    color: #000;
+    display: block;
+    border-right: 2px solid transparent;
+    padding: 15px 30px; }
+    .nav-vertical-2 .nav-link:hover {
+      background: rgba(0, 0, 0, 0.05); }
+    .nav-vertical-2 .nav-link.active {
+      color: #064CDB;
+      border-color: #064CDB; }
+    .nav-vertical-2 .nav-link[aria-expanded] {
+      position: relative; }
+      .nav-vertical-2 .nav-link[aria-expanded]::after {
+        position: absolute;
+        content: "\ebfa";
+        width: 1em;
+        line-height: 1em;
+        right: 30px;
+        top: 50%;
+        font-family: 'icomoon' !important;
+        font-size: 1.2rem;
+        margin-top: -0.5em;
+        color: #999999;
+        -webkit-transition: all 0.2s;
+        -moz-transition: all 0.2s;
+        transition: all 0.2s;
+        -webkit-transition-delay: 0s;
+        -moz-transition-delay: 0s;
+        transition-delay: 0s; }
+    .nav-vertical-2 .nav-link[aria-expanded="true"]::after {
+      -webkit-transform: rotate(180deg);
+      -moz-transform: rotate(180deg);
+      transform: rotate(180deg); }
+  .nav-vertical-2 .nav {
+    margin-top: 2px; }
+    .nav-vertical-2 .nav .nav-link {
+      padding: .5rem 1.25rem .5rem 1.875rem;
+      font-size: 0.875rem;
+      color: #555555; }
+      .nav-vertical-2 .nav .nav-link.active {
+        color: #064CDB; }
+
+        .nav {
+  position: relative; }
+  .nav .nav-item {
+    display: inline-block; }
+  .nav .nav-link {
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    transition-delay: 0s;
+    display: inline-block;
+    color: #999999; }
+    .nav .nav-link.active {
+      color: #111111; }
+  .nav .lavalamp-object {
+    display: none;
+    z-index: 1; }
