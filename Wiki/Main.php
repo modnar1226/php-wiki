@@ -1,19 +1,18 @@
 <?php
-namespace Wiki;
-use \Wiki\Load;
 
+use Load;
 class Main
 {
     private $config;
     private $load;
-    const DOC_PATH = 'docs/';
-
+    const DOC_PATH = './docs/';
+    
     public function __construct()
     {
-        $this->config = include_once './config.php';
-        $this->load = new Load;
-        
+        $this->config = include_once 'Wiki/config.php';
+        $this->load = new Load();
     }
+    
 
     public function index()
     {
@@ -25,7 +24,7 @@ class Main
 
         // loads html boilerplate with Css and Js from config
         $this->load->view(
-            'templates/header.php',
+            'Wiki/templates/header.php',
             $viewParams,
             false
         );
@@ -33,7 +32,7 @@ class Main
 
         // loads the main wiki page uses css and js loaded previously
         $this->load->view(
-            'templates/body.php',
+            'Wiki/templates/body.php',
             [
                 'menuData' => $this->getMenuData($this->getDocs()),
                 'containerClass' => 'container',
@@ -48,7 +47,7 @@ class Main
                 'contentClass' => 'col-sm-8 col-lg-10',
                 // load inner content
                 'content' => $this->load->view(
-                    'templates/default.php',
+                    'Wiki/templates/default.php',
                     [],
                     true
                 ),
@@ -65,7 +64,7 @@ class Main
          */
         // loads the footer boilerplate to close the html and body tags
         $this->load->view(
-            'templates/footer.php',
+            'Wiki/templates/footer.php',
             [],
             false
         );
@@ -105,7 +104,7 @@ class Main
     {
         $sections = $this->getDocs();
         return $this->load->view(
-            'templates/content.php',
+            'Wiki/templates/content.php',
             [
                 'sections' => [$sections[$document]],
                 'secTitleClass' => 'text-center',

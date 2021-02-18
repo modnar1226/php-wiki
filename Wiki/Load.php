@@ -1,5 +1,4 @@
 <?php
-namespace Wiki;
 
 class Load
 {

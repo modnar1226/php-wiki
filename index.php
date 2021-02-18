@@ -1,7 +1,6 @@
 <?php
-require 'autoloader.php';
-
-use \Wiki\Main;
+require 'Wiki/autoloader.php';
+use Main;
 $wiki = new Main();
 
 if (empty($_POST)) {
