@@ -5,7 +5,7 @@ class Main
 {
     private $config;
     private $load;
-    const DOC_PATH = './docs/';
+    const DOC_PATH = 'Wiki/docs/';
     
     public function __construct()
     {
@@ -72,14 +72,14 @@ class Main
 
     private function getDocs()
     {
-        $docFiles = scandir('docs');
+        $docFiles = scandir(self::DOC_PATH );
         unset($docFiles[0]);
         unset($docFiles[1]);
         $docFiles = array_values($docFiles);
         
         $docs = array();
         foreach ($docFiles as $file) {
-            $data = include_once self::DOC_PATH . $file;
+            $data = require_once self::DOC_PATH . $file;
             $docs[$data['id']] = $data;
         }
 
