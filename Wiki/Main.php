@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 use Load;
 class Main
 {
@@ -9,8 +11,16 @@ class Main
     
     public function __construct()
     {
-        $this->config = include_once 'Wiki/config.php';
+        $this->config = require_once 'Wiki/config.php';
         $this->load = new Load();
+        if ($this->config['use_database']) {
+            require_once 'Wiki/idiorm-master/idiorm.php';
+            require_once 'Wiki/paris-master/paris.php';
+            require_once 'Wiki/Doc.php';
+            ORM::configure('mysql:host=localhost;dbname=documents');
+            ORM::configure('username', 'app');
+            ORM::configure('password', 'BamBoozale');
+        }
     }
     
 
@@ -72,24 +82,15 @@ class Main
 
     private function getDocs()
     {
-        // TODO: Move this to a new function for file based docs
-        // TODO: Add config check for doc type "file vs DB"
-        $docFiles = scandir(self::DOC_PATH );
-        unset($docFiles[0]);
-        unset($docFiles[1]);
-        $docFiles = array_values($docFiles);
-        
         $docs = array();
-        foreach ($docFiles as $file) {
-            $data = require_once self::DOC_PATH . $file;
-            $docs[$data['id']] = $data;
+        if ($this->config['use_database']) {
+            $docs = $this->getDbBasedDocs();
+        } else {
+            $docs = $this->getFileBasedDocs();
         }
 
-        if(!empty($docs)){
-            return $docs;
-        }
-
-        return array();
+        // TODO: Add config check for doc type "file vs DB"
+        return $docs;
     }
 
     private function getMenuData($docData)
@@ -115,6 +116,37 @@ class Main
             ],
             true
         );
+    }
+
+    private function getFileBasedDocs(){
+        $docFiles = scandir(self::DOC_PATH);
+        unset($docFiles[0]);
+        unset($docFiles[1]);
+        $docFiles = array_values($docFiles);
+
+        $docs = array();
+        foreach ($docFiles as $file) {
+            $data = include_once self::DOC_PATH . $file;
+            $docs[$data['id']] = $data;
+        }
+
+        if (!empty($docs)) {
+            return $docs;
+        }
+
+        return array();
+    }
+
+    private function getDbBasedDocs(){
+        $docs = array();
+        foreach (Model::factory('Doc')->find_array() as $doc) {
+            $doc['content'] = json_decode($doc['content'], true);
+            foreach ($doc['content'] as $key => $section) {
+                $doc['content'][$key]['sub_content'] = base64_decode($section['sub_content']);
+            }
+            $docs[$doc['id']] = $doc;
+        }
+        return $docs;
     }
 }
 

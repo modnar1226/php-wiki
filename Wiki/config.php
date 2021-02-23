@@ -4,6 +4,7 @@
  * Css and Js are loaded in order of the array indices 
  */
 return [
+    'use_database' => false,
     'site_name' => 'PHP Wiki',
     'css' => [
         [
@@ -24,5 +25,6 @@ return [
         './public/theme/js/guidebook.js',
         './public/js/search.js',
         './public/js/loadPage.js'
-    ]
+    ],
+    
 ];
