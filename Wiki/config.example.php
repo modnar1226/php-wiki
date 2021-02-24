@@ -5,6 +5,9 @@
  */
 return [
     'use_database' => true,
+    'db_host' => 'mysql:host=localhost;dbname=documents',
+    'db_username' => 'your-database-username',
+    'db_password' => 'your-secret-password',
     'site_name' => 'PHP Wiki',
     'css' => [
         [
@@ -25,6 +28,5 @@ return [
         './public/theme/js/guidebook.js',
         './public/js/search.js',
         './public/js/loadPage.js'
-    ],
-    
+    ],   
 ];
