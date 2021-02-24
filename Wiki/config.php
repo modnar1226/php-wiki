@@ -4,7 +4,7 @@
  * Css and Js are loaded in order of the array indices 
  */
 return [
-    'use_database' => false,
+    'use_database' => true,
     'site_name' => 'PHP Wiki',
     'css' => [
         [
