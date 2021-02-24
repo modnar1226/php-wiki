@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (Object.hasOwnProperty.call(links, link)) {
             const element = links[link];
             element.addEventListener('click', function(event) {
+                console.log('clicked')
                 event.preventDefault();
                 clearActiveLinks()
                 element.classList.add('active')

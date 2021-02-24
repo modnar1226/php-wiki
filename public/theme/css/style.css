@@ -13725,16 +13725,15 @@ html.active > body {
     height: 60px;
     text-align: center;
     line-height: 60px;
-    background: #064CDB;
+    background: #000000;
     color: #fff;
     border-radius: 0.25rem;
     cursor: pointer;
     z-index: 120; }
     .overlay-menu-open:focus {
-      background: #053fb6; }
+      background: #000000; }
     .overlay-menu-open:before {
       content: "Table of Contents";
-      position: absolute;
       top: 0;
       left: 0;
       right: 0;

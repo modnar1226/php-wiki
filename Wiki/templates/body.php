@@ -45,24 +45,6 @@ $first = true;
                 <?php echo $content ?>
             </article>
             <!-- / content -->
-
-            <!--
-            <nav id="nav" class="<?php echo $navClass ?>">
-            <form id="searchForm" class="<?php echo $searchFormClass ?>">
-                <input class="<?php echo $searchInputClass ?>" type="search" placeholder="Search" aria-label="Search">
-                <button class="<?php echo $searchButtonClass ?>" type="submit">Search</button>
-            </form>
-            <ul id="nav-list" class="<?php echo $navListClass ?>">
-                <?php foreach ($sections as $section) : ?>
-                    <?php if (!empty($section)) : ?>
-                        <li class="<?php echo $navListItemClass ?>">
-                            <a href="#<?php echo $section['id'] ?>" class="<?php echo $navLinkClass ?>"><?php echo $section['title'] ?></a>
-                        </li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </ul>
-        </nav>
-                    -->
         </div>
     </div>
 </section>

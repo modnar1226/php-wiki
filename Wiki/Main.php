@@ -1,12 +1,15 @@
 <?php
+namespace Wiki;
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-use Load;
+use Wiki\Load;
 class Main
 {
     private $config;
     private $load;
+    public $menuData = array();
+    public $docData = array();
     const DOC_PATH = 'Wiki/docs/';
     
     public function __construct()
@@ -14,16 +17,25 @@ class Main
         $this->config = require_once 'Wiki/config.php';
         $this->load = new Load();
         if ($this->config['use_database']) {
-            require_once 'Wiki/idiorm-master/idiorm.php';
-            require_once 'Wiki/paris-master/paris.php';
+            require_once 'Wiki/idiorm/idiorm.php';
+            require_once 'Wiki/paris/paris.php';
             require_once 'Wiki/Doc.php';
-            ORM::configure('mysql:host=localhost;dbname=documents');
-            ORM::configure('username', 'app');
-            ORM::configure('password', 'BamBoozale');
+            \ORM::configure($this->config['db_host']);
+            \ORM::configure('username', $this->config['db_username']);
+            \ORM::configure('password', $this->config['db_password']);
+            //ORM::configure('return_result_sets', true);
+            //$categories = \ORM::for_table('documents')->select('id')->select('title')->distinct()->select('category')->find_array();
+            //$this->menuData = $this->getMenuData($categories);
         }
+        //$this->menuData = $this->getMenuData($this->getFileBasedDocs());
+        $this->getDocs();
+        $this->getMenuData();
     }
     
 
+    /**
+     * used to load a pre built example 
+     */
     public function index()
     {
         $viewParams = [
@@ -44,7 +56,7 @@ class Main
         $this->load->view(
             'Wiki/templates/body.php',
             [
-                'menuData' => $this->getMenuData($this->getDocs()),
+                'menuData' => $this->menuData,
                 'containerClass' => 'container',
                 'innerContainerClass' => 'row justify-content-between',
                 'navClass' => 'nav flex-column nav-vertical',
@@ -82,34 +94,33 @@ class Main
 
     private function getDocs()
     {
-        $docs = array();
         if ($this->config['use_database']) {
-            $docs = $this->getDbBasedDocs();
+            $this->getDbBasedDocs();
         } else {
-            $docs = $this->getFileBasedDocs();
+            $this->getFileBasedDocs();
         }
-
-        // TODO: Add config check for doc type "file vs DB"
-        return $docs;
     }
 
-    private function getMenuData($docData)
+    private function getMenuData()
     {
-        $menuData = array();
-        foreach ($docData as $doc) {
-            $menuData[$doc['category']][] = $doc;
+        if ($this->config['use_database']) {
+            $docData = \ORM::for_table('documents')->select('id')->select('title')->distinct()->select('category')->find_array();
+        } else {
+            $docData = $this->docData;
         }
-
-        return $menuData;
+        
+        foreach ($docData as $doc) {
+            $this->menuData[$doc['category']][] = $doc;
+        }
+        
     }
 
     public function getDoc($document)
     {
-        $sections = $this->getDocs();
         return $this->load->view(
             'Wiki/templates/content.php',
             [
-                'sections' => [$sections[$document]],
+                'sections' => [$this->docData[$document]],
                 'secTitleClass' => 'text-center',
                 'secParagraphClass' => 'ps-5',
                 'secHeaderClass' => ''
@@ -119,34 +130,26 @@ class Main
     }
 
     private function getFileBasedDocs(){
-        $docFiles = scandir(self::DOC_PATH);
-        unset($docFiles[0]);
-        unset($docFiles[1]);
-        $docFiles = array_values($docFiles);
-
-        $docs = array();
-        foreach ($docFiles as $file) {
-            $data = include_once self::DOC_PATH . $file;
-            $docs[$data['id']] = $data;
+        if (empty($this->docData)) {
+            $docFiles = scandir(self::DOC_PATH);
+            unset($docFiles[0]);
+            unset($docFiles[1]);
+            $docFiles = array_values($docFiles);
+            foreach ($docFiles as $file) {
+                $data = include self::DOC_PATH . $file;
+                $this->docData[$data['id']] = $data;
+            }
         }
-
-        if (!empty($docs)) {
-            return $docs;
-        }
-
-        return array();
     }
 
     private function getDbBasedDocs(){
-        $docs = array();
-        foreach (Model::factory('Doc')->find_array() as $doc) {
+        foreach (\Model::factory('Doc')->find_array() as $doc) {
             $doc['content'] = json_decode($doc['content'], true);
             foreach ($doc['content'] as $key => $section) {
                 $doc['content'][$key]['sub_content'] = base64_decode($section['sub_content']);
             }
-            $docs[$doc['id']] = $doc;
+            $this->docData[$doc['id']] = $doc;
         }
-        return $docs;
     }
 }
 

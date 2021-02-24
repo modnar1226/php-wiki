@@ -56,7 +56,10 @@ return [
 ];
 ```
 
+## Features
 
+* **Css and Javascript Optional**: Examples loaded with a bootstrap theme to generate an html page with styling.
+* ****: Entirely customizable, start with raw data or from some suggestion of normalized data.
 Loaded with bootstrap and uses built in templates to generate an html page with styling.
 
 You can choose to use a file based document system, or a database sotrage system.
