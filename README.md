@@ -4,4 +4,9 @@ Configurebale php wiki tool.
 
 Loaded with bootstrap and uses built in templates to generate an html page with styling.
 
-Currently uses a file based system, with plans on expanding to a use a database, as well as adding an editor to create better looking documents
+You can choose to use a file based document system, or a database sotrage system.
+
+Planned features:
+
+1. Html text editor, allowing direct editing capabilities to either file based or database hosted documents.
+2. Pdf export of documents.
