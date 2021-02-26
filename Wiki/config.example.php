@@ -8,25 +8,4 @@ return [
     'db_host' => 'mysql:host=localhost;dbname=documents',
     'db_username' => 'your-database-username',
     'db_password' => 'your-secret-password',
-    'site_name' => 'PHP Wiki',
-    'css' => [
-        [
-            'href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css',
-            'integrity' => 'sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1',
-            'crossorigin'=> 'anonymous'
-        ],
-        [
-            'href' => './public/theme/css/style.css'
-        ],
-        [
-            'href' => './public/theme/css/vendor.css'
-        ]
-    ],
-    'js' => [
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js',
-        './public/theme/js/vendor.min.js',
-        './public/theme/js/guidebook.js',
-        './public/js/search.js',
-        './public/js/loadPage.js'
-    ],   
 ];

@@ -3,7 +3,6 @@ namespace Wiki;
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-use Wiki\Load;
 class Main
 {
     private $config;
@@ -23,75 +22,10 @@ class Main
             \ORM::configure($this->config['db_host']);
             \ORM::configure('username', $this->config['db_username']);
             \ORM::configure('password', $this->config['db_password']);
-            //ORM::configure('return_result_sets', true);
-            //$categories = \ORM::for_table('documents')->select('id')->select('title')->distinct()->select('category')->find_array();
-            //$this->menuData = $this->getMenuData($categories);
         }
-        //$this->menuData = $this->getMenuData($this->getFileBasedDocs());
-        $this->getDocs();
         $this->getMenuData();
     }
-    
-
-    /**
-     * used to load a pre built example 
-     */
-    public function index()
-    {
-        $viewParams = [
-            'title' => $this->config['site_name'],
-            'cssFiles' => $this->config['css'],
-            'jsFiles' => $this->config['js'],
-        ];
-
-        // loads html boilerplate with Css and Js from config
-        $this->load->view(
-            'Wiki/templates/header.php',
-            $viewParams,
-            false
-        );
-
-
-        // loads the main wiki page uses css and js loaded previously
-        $this->load->view(
-            'Wiki/templates/body.php',
-            [
-                'menuData' => $this->menuData,
-                'containerClass' => 'container',
-                'innerContainerClass' => 'row justify-content-between',
-                'navClass' => 'nav flex-column nav-vertical',
-                'searchFormClass' => 'd-flex',
-                'searchInputClass' => 'form-control me-2',
-                'searchButtonClass' => 'btn btn-outline-success',
-                'navListClass' => 'pt-4 nav flex-column nav-colapse',
-                'navListItemClass' => 'nav-item',
-                'navLinkClass' => 'nav-link',
-                'contentClass' => 'col-sm-8 col-lg-10',
-                // load inner content
-                'content' => $this->load->view(
-                    'Wiki/templates/default.php',
-                    [],
-                    true
-                ),
-            ],
-            false
-        );
-        /**
-         *  [
-         *      'sections' => $sections,
-         *      'secTitleClass' => 'text-center',
-         *      'secParagraphClass' => 'ps-5',
-         *      'secHeaderClass' => ''
-         *  ]
-         */
-        // loads the footer boilerplate to close the html and body tags
-        $this->load->view(
-            'Wiki/templates/footer.php',
-            [],
-            false
-        );
-    }
-
+        
     private function getDocs()
     {
         if ($this->config['use_database']) {
@@ -106,6 +40,7 @@ class Main
         if ($this->config['use_database']) {
             $docData = \ORM::for_table('documents')->select('id')->select('title')->distinct()->select('category')->find_array();
         } else {
+            $this->getDocs();
             $docData = $this->docData;
         }
         
@@ -117,16 +52,9 @@ class Main
 
     public function getDoc($document)
     {
-        return $this->load->view(
-            'Wiki/templates/content.php',
-            [
-                'sections' => [$this->docData[$document]],
-                'secTitleClass' => 'text-center',
-                'secParagraphClass' => 'ps-5',
-                'secHeaderClass' => ''
-            ],
-            true
-        );
+        $this->getDocs();
+        return $this->docData[$document];
+        
     }
 
     private function getFileBasedDocs(){
