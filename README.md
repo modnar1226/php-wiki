@@ -98,8 +98,9 @@ if (empty($_POST)) {
 ```php
 <?php
 /**
- * Add 3rd party dependancies here. Usefull for when you have either compiled css and javascript or using individual files specific to the documentation
- * Css and Js are loaded in order of the array indices 
+ * Boolean to toggle database or file system document storage.
+ * and
+ * Database Credentials 
  */
 return [
     'use_database' => true,
